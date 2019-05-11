@@ -8,11 +8,12 @@
 package serveiWebSOAP;
 
 public interface ServeiWeb extends java.rmi.Remote {
+    public boolean addLocal(serveiWebSOAP.Local arg0) throws java.rmi.RemoteException;
     public serveiWebSOAP.Local[] getLocalsByVerified(java.lang.String arg0, long arg1) throws java.rmi.RemoteException;
-    public boolean baixaLocal(java.lang.String arg0) throws java.rmi.RemoteException;
     public serveiWebSOAP.Formulari getFormulariByLocalType(java.lang.String arg0, java.lang.String arg1) throws java.rmi.RemoteException;
     public boolean verifyLocal(java.lang.String arg0, java.lang.String arg1, int arg2) throws java.rmi.RemoteException;
     public serveiWebSOAP.Local getLocalByAdressOrName(java.lang.String arg0, java.lang.String arg1, int arg2, java.lang.String arg3, java.lang.String arg4) throws java.rmi.RemoteException;
+    public boolean removeLocal(java.lang.String arg0) throws java.rmi.RemoteException;
     public java.lang.String getVerifiedByNameAddress(java.lang.String arg0, java.lang.String arg1, int arg2, java.lang.String arg3) throws java.rmi.RemoteException;
     public serveiWebSOAP.Caracteristica getCaracteristicaByNomCaracteristicaCa(java.lang.String arg0) throws java.rmi.RemoteException;
     public serveiWebSOAP.Caracteristica[] getCaracteristica(java.lang.String arg0, java.lang.String arg1) throws java.rmi.RemoteException;

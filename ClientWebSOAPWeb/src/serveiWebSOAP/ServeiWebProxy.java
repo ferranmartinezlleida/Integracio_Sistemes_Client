@@ -44,16 +44,16 @@ public class ServeiWebProxy implements serveiWebSOAP.ServeiWeb {
     return serveiWeb;
   }
   
+  public boolean addLocal(serveiWebSOAP.Local arg0) throws java.rmi.RemoteException{
+    if (serveiWeb == null)
+      _initServeiWebProxy();
+    return serveiWeb.addLocal(arg0);
+  }
+  
   public serveiWebSOAP.Local[] getLocalsByVerified(java.lang.String arg0, long arg1) throws java.rmi.RemoteException{
     if (serveiWeb == null)
       _initServeiWebProxy();
     return serveiWeb.getLocalsByVerified(arg0, arg1);
-  }
-  
-  public boolean baixaLocal(java.lang.String arg0) throws java.rmi.RemoteException{
-    if (serveiWeb == null)
-      _initServeiWebProxy();
-    return serveiWeb.baixaLocal(arg0);
   }
   
   public serveiWebSOAP.Formulari getFormulariByLocalType(java.lang.String arg0, java.lang.String arg1) throws java.rmi.RemoteException{
@@ -72,6 +72,12 @@ public class ServeiWebProxy implements serveiWebSOAP.ServeiWeb {
     if (serveiWeb == null)
       _initServeiWebProxy();
     return serveiWeb.getLocalByAdressOrName(arg0, arg1, arg2, arg3, arg4);
+  }
+  
+  public boolean removeLocal(java.lang.String arg0) throws java.rmi.RemoteException{
+    if (serveiWeb == null)
+      _initServeiWebProxy();
+    return serveiWeb.removeLocal(arg0);
   }
   
   public java.lang.String getVerifiedByNameAddress(java.lang.String arg0, java.lang.String arg1, int arg2, java.lang.String arg3) throws java.rmi.RemoteException{
