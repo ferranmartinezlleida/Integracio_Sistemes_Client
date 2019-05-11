@@ -53,10 +53,24 @@ function appendCaracteristicatoTable(tableName,row,nomCarac,valueCarac,tipoCarac
 	var cell2 = row.insertCell(1)
 	var cell3 = row.insertCell(2)
 	
+	var tipus = "";
+	var value = valueCarac;
 
+	if(tipoCarac == "1"){
+		tipus = "Cert/fals";
+		if(valueCarac == "0"){
+			value="Fals";
+		}else if(valueCarac =="1" ){
+			value="Cert";
+		}
+	}else if (tipoCarac == "2"){
+		tipus = "Rang: 1..5";
+		}
+	
+	
 	cell1.innerHTML= nomCarac;
-	cell2.innerHTML = tipoCarac;
-	cell3.innerHTML = valueCarac
+	cell2.innerHTML = tipus;
+	cell3.innerHTML = value;
 }
 
 function getCaracteristiquesfromString(caract){
