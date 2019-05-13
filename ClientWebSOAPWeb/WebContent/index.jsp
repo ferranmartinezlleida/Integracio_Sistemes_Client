@@ -10,10 +10,12 @@
 <html>
 <%
 Local local = (Local)session.getAttribute("Local");
+String action = (String)session.getAttribute("action");
 String nomVia = local.getNomVia();
 String nomCarrer = local.getNomCarrer();
 int numero = local.getNumero();
 String nomLocal = local.getNomLocal();
+String tipus_busqueda = (String)session.getAttribute("tipus_busqueda");
 Formulari form = local.getForm();
 Caracteristica[] caracteristiques = form.getCaracteristiques();
 
@@ -85,6 +87,47 @@ function getCaracteristiquesfromString(caract){
 
 }
 
+function defineLabelButtonbyAction(){
+
+	var button = "";
+	var action = "";
+	var action = "<%=action%>";
+	if(action == "B"){
+
+		button="Dona de Baixa";
+		action="Esborra";
+		document.frm.action ="Delete";
+	}else if(action == "V"){
+		button="Validar";
+		action="Valida";
+		document.frm.action ="verify_servlet";
+	}else if(action == "C"){
+		document.getElementById('taula_accions').style.display = 'none';
+		document.getElementById('boto').style.display = 'none';
+		document.getElementById('boto_label').style.display = 'none';
+		
+
+	}
+	document.getElementById('adress').href = "adress.html?action="+"<%=action%>";
+	document.getElementById('boto').innerHTML=button;
+	document.getElementById('boto_label').innerHTML=action;
+	
+}
+
+function letSearchByAdressDependingOnTipusBusqueda(){
+
+	var tipus_busqueda = "<%=tipus_busqueda%>";
+
+	if(tipus_busqueda == "adress"){
+
+		document.getElementById("alternative_search").style.display="none";
+	}
+
+
+	
+}
+
+
 
 </script>
 
@@ -93,8 +136,18 @@ function getCaracteristiquesfromString(caract){
 <title>Local</title>
 </head>
 <body>
+<input type="hidden" id="action" name="action" value="<%=action%>"/>
 
-<table>
+	<table id="alternative_search">
+		<tr>
+			<td>No és el local que busques?</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>Proba una cerca més concreta</td>
+			<td><a id="adress" name="adress"  href="">Busca per adreça</a></td>
+		</tr>
+	</table>
 	<table>
 	<tr>
 		<td>Dades de l'establiment</td>
@@ -124,13 +177,29 @@ function getCaracteristiquesfromString(caract){
 	</tr>
 	
 </table>
+<form method="get" id="frm" name="frm" action="">
+
+<input type="hidden" id="pk" name="pk" value="<%=local.getCodiLocal()%>"/>
+<table id="taula_accions">
+	<tr>
+		<td><h1 id="boto_label"></h1></td>
+	</tr>
+	<tr>
+		<td><td><button id="boto" name="boto" onclick="document.frm.submit();" value=""> </button></td></td>
+	</tr>
+</table>
+
+</form>
+
 	
 </table>
 
 </body>
 <script>
-document.getElementById("tipusLocal").value = getNameTipoLocalFromCodi(<%=local.getCodiTipoLocal()%>);
-document.getElementById("observacions").value = checkIfNull(<%=local.getObservacions()%>);
-getCaracteristiquesfromString("<%=caract%>");
+	document.getElementById("tipusLocal").value = getNameTipoLocalFromCodi(<%=local.getCodiTipoLocal()%>);
+	document.getElementById("observacions").value = checkIfNull(<%=local.getObservacions()%>);
+	getCaracteristiquesfromString("<%=caract%>");
+	defineLabelButtonbyAction();
+	letSearchByAdressDependingOnTipusBusqueda();
 </script>
 </html>

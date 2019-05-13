@@ -60,23 +60,21 @@ public class LocalServlet extends HttpServlet {
 			ServeiWeb port;
 			port = service.getServeiWebPort();
 			
-			
+			String action = (String)request.getParameter("action");
 			String tipusVia = (String)request.getParameter("tipusVia");
 			String nomCarrer = (String)request.getParameter("nomCarrer");
 			int numero = Integer.parseInt((String)request.getParameter("numero"));
 			String nomLocal = (String)request.getParameter("nomLocal");
 			String idioma = (String)request.getParameter("idioma");
+			String tipus_busqueda = (String)request.getParameter("tipus_busqueda");
 			
-			System.out.println("tipus via:"+tipusVia);
-			System.out.println(nomCarrer);
-			System.out.println(numero);
-			System.out.println(nomLocal);
-			System.out.println(idioma);
 
 			Local local = port.getLocalByAdressOrName(tipusVia,nomCarrer,numero,nomLocal,idioma);
 
 			sessio = request.getSession(true);		
 			sessio.setAttribute("Local", local);
+			sessio.setAttribute("action", action);
+			sessio.setAttribute("tipus_busqueda",tipus_busqueda);
 			
 			ServletContext context= getServletContext();
 			RequestDispatcher rd= context.getRequestDispatcher("/index");
