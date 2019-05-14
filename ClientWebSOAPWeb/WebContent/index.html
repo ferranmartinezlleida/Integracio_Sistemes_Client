@@ -5,7 +5,24 @@
 <title>Home</title>
 </head>
 <body>
+<h1>Benvinguts</h1>
 
+<form method="post" action="IndexServlet">
+	<p> Alta d'un local de tipus: 
+	<select name="tipoLocal">
+	  <option value="1">BARS I RESTAURANTS</option>
+	  <option value="2">COMERÇOS</option>
+	  <option value="3">ENTITATS BANCÀRIES</option>
+	  <option value="4">FARMÀCIES</option>
+	  <option value="5">HOTELS</option>
+	  <option value="6">LOCALS PÚBLICS</option>
+ 	</select>
+ 	<input type="submit" name="submit" value="Donar d'alta"/>
+							
+	</p> 
+</form>
+
+<br>
 <a href="adress.html">findbyadress</a>
 <a href="name.html">findbyname</a>
 
