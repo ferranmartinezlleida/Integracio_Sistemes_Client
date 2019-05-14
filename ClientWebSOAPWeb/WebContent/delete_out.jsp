@@ -4,9 +4,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Esborra</title>
+<%
+String mssg_resultat = (String)session.getAttribute("mssg_resultat");
+%>
+
 </head>
 <body>
-
+<br><%=mssg_resultat%></br>
 </body>
 </html>

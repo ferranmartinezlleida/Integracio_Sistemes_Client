@@ -2,30 +2,91 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Adress</title>
+<title> Busca per adreça</title>
 </head>
 <body>
-<form method="get" action="LocalServlet">
+<form method="get" action="LocalServlet" name="frm">
 
-<input type="hidden" name="nomLocal"/>
-
-TipusVia:
-<br>
-	<input type="text" name="tipusVia"/>
-<br>
-NomCarrer:
-<br>
-	<input type="text" name="nomCarrer"/>
-<br>
-Numero
-<br>
-	<input type="text" name="numero"/>
-<br>
-Idioma
-<br>
-	<input type="text" name="idioma"/>
-<br>
-		<input type="submit" name="submit" value="Fer clic per anar al Servlet"/>	
+	<input type="hidden" name="nomLocal"/>
+	<input type="hidden" name="action" id="action"/>
+	<input type="hidden" name="tipus_busqueda" id="tipus_busqueda" value="adress"/>
+	
+	
+	<table>
+		<tr>
+			<td>Tipus de Via:</td>
+		</tr>
+		<tr>
+			<td>
+				<select name="tipusVia">
+				  <option value="RA">Rambla</option>
+				  <option value="AV">Avinguda</option>
+				  <option value="PL">Plaça</option>
+  				  <option value="CA">Carrer</option>
+  				  <option value="PS">Passeig</option>
+  				  <option value="TR">Travesia</option>				  
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td>Nom del carrer:</td>
+		</tr>
+		<tr>
+			<td><input type="text" name="nomCarrer" id="nomCarrer"/></td>
+		</tr>
+		<tr>
+			<td>Numero</td>
+		</tr>
+		<tr>
+			<td><input type="text" name="numero" id="numero"/></td>
+		</tr>
+		<tr>
+			<td>Idioma del Formulari</td>
+		</tr>
+		<tr>
+			<td>
+				<select name="idioma">
+				  <option value="ca">Català</option>
+				  <option value="es">Castellà</option>
+				  <option value="en">Inglés</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<input type="button" name="buscar" onclick="validarParametres()" value="Busca"/>
+			</td>
+		</tr>
+	</table>			
 </form>
 </body>
+<script>
+
+var urlParams = new URLSearchParams(location.search);
+var action = urlParams.get('action'); 
+document.getElementById("action").value = action;
+
+function validarParametres(){
+	var infix_mssgError = "";
+	var premssgError = "El camp " ;
+	var sufmssgError = " ha d'estar informat per realitzar la consulta";
+
+
+	if(document.getElementById('nomCarrer').value == ""){
+		infix_mssgError ="Nom del carrer";
+		alert(premssgError + infix_mssgError + sufmssgError);
+		return;
+	}
+	
+	if(!(parseInt(document.getElementById('numero').value) > 0)){
+		mssgError = "El camp número ha de ser un número major que 0 no negatiu."
+		alert(mssgError);
+		return;		
+	}
+
+	document.frm.submit();	
+}
+
+
+</script>
 </html>

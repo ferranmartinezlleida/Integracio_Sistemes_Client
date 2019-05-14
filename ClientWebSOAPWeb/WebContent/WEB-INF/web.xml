@@ -20,8 +20,33 @@
     <servlet-name>addLocal</servlet-name>
     <jsp-file>/addLocal.jsp</jsp-file>
   </servlet>
+  
   <servlet-mapping>
     <servlet-name>addLocal</servlet-name>
     <url-pattern>/addLocal</url-pattern>
   </servlet-mapping>
+  
+<servlet>
+    <display-name>verify_out</display-name>
+    <servlet-name>verify_out</servlet-name>
+    <jsp-file>/verify_out.jsp</jsp-file>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>verify_out</servlet-name>
+    <url-pattern>/verify_out</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <description></description>
+    <display-name>delete_out</display-name>
+    <servlet-name>delete_out</servlet-name>
+    <jsp-file>/delete_out.jsp</jsp-file>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>delete_out</servlet-name>
+    <url-pattern>/delete_out</url-pattern>
+  </servlet-mapping>
+  
 </web-app>

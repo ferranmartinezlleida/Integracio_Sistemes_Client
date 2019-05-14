@@ -5,23 +5,61 @@
 <title>Busca per nom</title>
 </head>
 <body>
-<form method="get" action="LocalServlet">
+<form method="get" action="LocalServlet" name="frm">
 
+	<input type="hidden" name="action" id="action"/>
 	<input type="hidden" name="tipusVia"/>
+	<input type="hidden" name="tipus_busqueda" id="tipus_busqueda" value="name"/>
 	<input type="hidden" name="nomCarrer"/>
 	<input type="hidden" name="numero" value="0"/>
-<br>
-NomLocal
-<br>
-	<input type="text" name="nomLocal"/>
-<br>
-Idioma
-<br>
-	<input type="text" name="idioma"/>
-<br>
-		<input type="submit" name="submit" value="Fer clic per anar al Servlet"/>	
+	<table>
+		<tr>
+			<td>Nom del local</td>
+		</tr>
+		<tr>
+			<td><input type="text" name="nomLocal" id="nomLocal"/></td>
+		</tr>
+		<tr>
+			<td>Idioma del Formulari</td>
+		</tr>
+		<tr>
+			<td>
+				<select name="idioma">
+				  <option value="ca">Català</option>
+				  <option value="es">Castellà</option>
+				  <option value="en">Inglés</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td><input type="button" name="busca" onclick="validarParametres()" value="Busca"/></td>
+		</tr>
+	</table>	
 </form>
 
 
 </body>
+<script>
+
+var urlParams = new URLSearchParams(location.search);
+var action = urlParams.get('action'); 
+document.getElementById("action").value = action;
+
+function validarParametres(){
+	var infix_mssgError = "";
+	var premssgError = "El camp " ;
+	var sufmssgError = " ha d'estar informat per realitzar la consulta";
+
+	if(document.getElementById('nomLocal').value == ""){
+		infix_mssgError ="Nom del local";
+		alert(premssgError + infix_mssgError + sufmssgError);
+		return;
+	}
+
+	document.frm.submit();	
+}
+
+
+
+</script>
 </html>
