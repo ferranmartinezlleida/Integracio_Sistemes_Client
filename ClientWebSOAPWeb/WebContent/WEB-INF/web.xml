@@ -14,4 +14,14 @@
     <servlet-name>index</servlet-name>
     <url-pattern>/index</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>addLocal</display-name>
+    <servlet-name>addLocal</servlet-name>
+    <jsp-file>/addLocal.jsp</jsp-file>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>addLocal</servlet-name>
+    <url-pattern>/addLocal</url-pattern>
+  </servlet-mapping>
 </web-app>
