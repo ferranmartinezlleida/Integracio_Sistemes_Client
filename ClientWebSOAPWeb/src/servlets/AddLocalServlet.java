@@ -59,24 +59,20 @@ public class AddLocalServlet extends HttpServlet {
 			port = service.getServeiWebPort();
 			session = request.getSession(true);
 			
-			int tipoLocal = Integer.parseInt(request.getParameter("tipoLocal"));	
-
-			
+			// Get parameter
 			String nomLocal = (String)request.getParameter("nomLocal");	
 			String nomCarrer = (String)request.getParameter("nomCarrer");	
 			int codiCarrer = Integer.parseInt(request.getParameter("codiCarrer"));	
 			String nomVia = (String)request.getParameter("nomVia");	
 			int numero = Integer.parseInt(request.getParameter("numero"));	
 			String observacions = (String)request.getParameter("observacions");	
-
-			System.out.println("tipoLocal: " + tipoLocal);
-			System.out.println("nomLocal: " + nomLocal);
-			System.out.println("nomCarrer: " + nomCarrer);
-			System.out.println("codiCarrer: " + codiCarrer);
-			System.out.println("nomVia: " + nomVia);
-			System.out.println("numero: " + numero);
-			System.out.println("observacions: " + observacions);
 			
+			// Get attribute
+			int tipoLocal = (int) session.getAttribute("tipoLocal");
+			Caracteristica[] caracteristiques = (Caracteristica[]) session.getAttribute("caracteristiques");
+			String idioma = (String) session.getAttribute("idioma");
+			
+			// Set Local fields
 			Local local = new Local();
 			local.setCodiTipoLocal(tipoLocal);
 			local.setNomLocal(nomLocal);
@@ -87,25 +83,23 @@ public class AddLocalServlet extends HttpServlet {
 			local.setObservacions(observacions);
 			
 			Formulari form = new Formulari();
-			Caracteristica[] caracteristiques = (Caracteristica[]) session.getAttribute("caracteristiques");
 			form.setCodiTipoLocal(tipoLocal);
-			form.setIdioma("ca");
+			form.setIdioma(idioma);
 		   
-			int value = 0;
+			
 			for(Caracteristica ca: caracteristiques) {
-				value = Integer.parseInt(request.getParameter("caracteristica_" + ca.getCodiCaracteristica()));	
-				ca.setValor(value);
+				ca.setValor(Integer.parseInt(request.getParameter("caracteristica_" + ca.getCodiCaracteristica())));
 			}
+			
 			form.setCaracteristiques(caracteristiques);
 			local.setForm(form);
 			
+			// Add Local
 			boolean status = port.addLocal(local);
 			session.setAttribute("status", status);
-
-
 			
-			ServletContext context= getServletContext();
-			RequestDispatcher rd= context.getRequestDispatcher("/savedLocal.jsp");
+			ServletContext context = getServletContext();
+			RequestDispatcher rd = context.getRequestDispatcher("/savedLocal.jsp");
 			rd.forward(request, response);
 			
 		} catch (ServletException e) {

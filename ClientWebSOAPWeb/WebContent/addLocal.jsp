@@ -6,7 +6,6 @@
 <%@page import="serveiWebSOAP.ServeiWebServiceLocator"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,28 +14,23 @@
 </head>
 
 <%
+	// Get Attribute
 	int tipoLocal = (int) session.getAttribute("tipoLocal");
 	Formulari formulari = (Formulari) session.getAttribute("formulari");
 	Caracteristica[] caracteristiques = formulari.getCaracteristiques();
-	session.setAttribute("caracteristiques", caracteristiques);
-%>
-
-
-<script>
 	
-</script>
-
-
-
+	// Set Attribute
+	session.setAttribute("caracteristiques", caracteristiques);
+	session.setAttribute("idioma", session.getAttribute("idioma"));
+	session.setAttribute("tipoLocal", tipoLocal);
+%>
 
 <body>
 	<h1>Donar d'alta un local</h1>
 	<p id="nameTipoLocal"></p>
 
 	<form method="post" action="AddLocalServlet">
-	
-		<input type="hidden" name="tipoLocal" value=<%=tipoLocal%> />
-		
+			
 		Nom local: <input type="text" name="nomLocal" maxlength="250" />
 		
 		<br><br>
@@ -45,15 +39,22 @@
 			
 		<br><br>
 		
-		Codi carrer: <input type="number" name="codiCarrer" /> 
+		Codi carrer: <input type="number" name="codiCarrer" value=0 /> 
 
 		<br><br>
 		
-		Nom via: <input type="text" name="nomVia" maxlength="2" /> 
-		
+		Nom via: <select name="nomVia">
+				  <option value="RA">Rambla</option>
+				  <option value="AV">Avinguda</option>
+				  <option value="PL">Plaça</option>
+  				  <option value="CA">Carrer</option>
+  				  <option value="PS">Passeig</option>
+  				  <option value="TR">Travesia</option>				  
+				</select>
+				
 		<br><br>
 		
-		Numero: <input type="number" name="numero" /> 
+		Numero: <input type="number" name="numero" value=0 /> 
 		
 		<br><br>
 		
@@ -65,18 +66,20 @@
 		
 		<div id="formulariAccessibilitat"></div>
 
-
 		<br>
 
 		<input type="submit" name="submit" value="Donar d'alta" />
 	</form>
-
-
-
-
 </body>
 
 <script>
+
+	document.getElementById("nameTipoLocal").innerHTML = 
+		"Tipus de local: " + window.getNameTipoLocalFromCodi(<%=tipoLocal%>);
+
+	generateFormulari();
+
+
 	function getNameTipoLocalFromCodi(codi) {
 
 		var tipusLocal = [ "BARS I RESTAURANTS", "COMERÇOS",
@@ -85,43 +88,62 @@
 
 		return tipusLocal[codi - 1];
 	}
+
+	function generateFormulari(){
+		
+		<% for(Caracteristica ca : caracteristiques) {
+			String text = ca.getNivell() + " - " + ca.getNomCaracteristica() ;
+		%>
+		
+			// Add NomCaracteristica
+			var node = document.createElement("p");
+			var textnode = document.createTextNode("<%= text %>");
+			node.appendChild(textnode);
+			document.getElementById("formulariAccessibilitat").appendChild(node);
 	
-	document.getElementById("nameTipoLocal").innerHTML = "Tipus de local: "
-		+ window.getNameTipoLocalFromCodi(<%=tipoLocal%>);
+			// Add select
+			var select = document.createElement("select");
 
+			// select name
+			var att = document.createAttribute("name");
+			att.value = "<%= "caracteristica_" + ca.getCodiCaracteristica()%>";
+			select.setAttributeNode(att);
+
+			// options for the select
+			var option;
+			
+			<% if (ca.getTipo().equals("1")) { %>
+
+				// option:  False
+				option = document.createElement("option");
+				option.value = "0";
+				textnode = document.createTextNode("Fals");
+				option.appendChild(textnode);
+				select.appendChild(option);
+				
+				// option: True
+				option = document.createElement("option");
+				option.value = "1";
+				textnode = document.createTextNode("Cert");
+				option.appendChild(textnode);
+				select.appendChild(option);
+				
+			<% } else if (ca.getTipo().equals("2")){ %>
+				// option: 1..5
+				for(var i = 1; i < 6; i ++){
+					option = document.createElement("option");
+					option.value = i;
+					textnode = document.createTextNode(i);
+					option.appendChild(textnode);
+					select.appendChild(option);
+				}
+		
+			<% } %>
 	
-	<% for(Caracteristica ca : caracteristiques) { %>
-		// Add NomCaracteristica
-		var node = document.createElement("p");
-		var textnode = document.createTextNode("<%=ca.getNomCaracteristica()%>");
-		node.appendChild(textnode);
-		document.getElementById("formulariAccessibilitat").appendChild(node);
-
-		// Add input
-		var input = document.createElement("input");
-
-		// type
-		var att = document.createAttribute("type");
-		att.value = "number";
-		input.setAttributeNode(att);
-
-		// name
-		att = document.createAttribute("name");
-		att.value = "caracteristica_" + "<%=ca.getCodiCaracteristica()%>";
-		input.setAttributeNode(att);
-
-		// default value = 0
-		var att = document.createAttribute("value");
-		att.value = 0;
-		input.setAttributeNode(att);
-
-		document.getElementById("formulariAccessibilitat").appendChild(input);
-
-	<% } %>
-
-
-
+			document.getElementById("formulariAccessibilitat").appendChild(select);
 	
+		<% } %>
+	}
 	
 </script>
 

@@ -52,24 +52,21 @@ public class IndexServlet extends HttpServlet {
 		try {
 			ServeiWebServiceLocator service = new ServeiWebServiceLocator();
 			ServeiWeb port;
+			session = request.getSession(true);		
 			port = service.getServeiWebPort();
 			
+			// Get parameter
 			int tipoLocal = Integer.parseInt(request.getParameter("tipoLocal"));	
-			
-			System.out.println("Local type: "+ tipoLocal);
-			
-			Formulari formulari = port.getFormulariByLocalType(tipoLocal, "ca");
-			System.out.println(formulari);
-			
-			//Local local = port.getLocalByAdressOrName(tipusVia,nomCarrer,numero,nomLocal,idioma);
+			String idioma = (String) request.getParameter("idioma");	
 
-			session = request.getSession(true);		
+			// Set attribute
+			Formulari formulari = port.getFormulariByLocalType(tipoLocal, idioma);
 			session.setAttribute("tipoLocal", tipoLocal);
+			session.setAttribute("idioma", idioma);
 			session.setAttribute("formulari", formulari);
 
-			
-			ServletContext context= getServletContext();
-			RequestDispatcher rd= context.getRequestDispatcher("/addLocal");
+			ServletContext context = getServletContext();
+			RequestDispatcher rd = context.getRequestDispatcher("/addLocal");
 			rd.forward(request, response);
 			
 		} catch (ServletException e) {

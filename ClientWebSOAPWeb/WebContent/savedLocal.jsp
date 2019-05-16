@@ -10,7 +10,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title></title>
 </head>
 <body>
 	<h1 id="status"></h1>
@@ -22,8 +22,10 @@
 	
 <%if (status) {%>
 	document.getElementById("status").innerHTML = "S'ha guardat correctament";
+	document.title = "Local guardat";
 <%} else { %>
 	document.getElementById("status").innerHTML = "S'ha produït un error";
+	document.title = "Error";
 <% } %>
 	
 </script>
