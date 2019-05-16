@@ -12,6 +12,13 @@ String mssg_resultat = (String)session.getAttribute("mssg_resultat");
 
 </head>
 <body>
-<br><%=mssg_resultat%></br>
+	<table>
+		<tr>
+			<td><a href="index.html">Torna al inici</a></td>
+		</tr>	
+		<tr>
+			<td><%=mssg_resultat%></td>
+		</tr>	
+	</table>
 </body>
 </html>

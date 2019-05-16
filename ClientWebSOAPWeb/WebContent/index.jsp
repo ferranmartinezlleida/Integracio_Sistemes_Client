@@ -27,20 +27,40 @@ for(int i=0;i<caracteristiques.length;i++){
 	
 }
 
+String senseDades = "Sense Dades";
+boolean localTrobat = true;
+
+if(local.getNomLocal().equals("buit")){
+	localTrobat = false;
+	local.setNomLocal(senseDades);
+	local.setCodiTipoLocal(7);
+}
 
 %>
 <script>
 
+function setValuesInputDireccio(){
+
+	if(<%=localTrobat%>){
+		document.getElementById("direccio").value = "<%=local.getNomVia()%> <%=local.getNomCarrer()%>, <%=local.getNumero()%>";
+	}else{
+		document.getElementById("direccio").value = "Sense Dades";
+	}
+	
+}
+
+
+
 function getNameTipoLocalFromCodi(codi){
 
-	var tipusLocal = ["BARS I RESTAURANTS","COMERÇOS","ENTITATS BANCÀRIES","FARMÀCIES","HOTELS","LOCALS PÚBLICS"];
+	var tipusLocal = ["BARS I RESTAURANTS","COMERÇOS","ENTITATS BANCÀRIES","FARMÀCIES","HOTELS","LOCALS PÚBLICS","Sense Dades"];
 
 	return tipusLocal[(parseInt(codi)-1)];
 }
 
 function checkIfNull(obs){
 
-	var observacions = "Sense observacions";
+	var observacions = "Sense Dades";
 
 	if(obs != null){
 		observacions = obs;
@@ -57,7 +77,7 @@ function appendCaracteristicatoTable(tableName,row,nomCarac,valueCarac,tipoCarac
 	
 	var tipus = "";
 	var value = valueCarac;
-
+	debugger;
 	if(tipoCarac == "1"){
 		tipus = "Cert/fals";
 		if(valueCarac == "0"){
@@ -67,8 +87,10 @@ function appendCaracteristicatoTable(tableName,row,nomCarac,valueCarac,tipoCarac
 		}
 	}else if (tipoCarac == "2"){
 		tipus = "Rang: 1..5";
-		}
-	
+	}else if(tipoCarac ==""){
+		tipus = "Sense Dades";
+		value = "";
+	}
 	
 	cell1.innerHTML= nomCarac;
 	cell2.innerHTML = tipus;
@@ -137,6 +159,11 @@ function letSearchByAdressDependingOnTipusBusqueda(){
 </head>
 <body>
 <input type="hidden" id="action" name="action" value="<%=action%>"/>
+	<table>
+		<tr>
+			<td><a href="index.html">Torna al inici</a></td>
+		</tr>	
+	</table>
 
 	<table id="alternative_search">
 		<tr>
@@ -163,7 +190,7 @@ function letSearchByAdressDependingOnTipusBusqueda(){
 	</tr>
 	<tr>
 		<td>Adreça:</td>
-		<td><input type="text" name="direccio" readonly="readonly" id="direccio" value="<%=local.getNomVia()%> <%=local.getNomCarrer()%>, <%=local.getNumero()%>"/></td>
+		<td><input type="text" name="direccio" readonly="readonly" id="direccio"/></td>
 	</tr>
 	<tr>
 		<td>Observacions:</td>
@@ -199,6 +226,7 @@ function letSearchByAdressDependingOnTipusBusqueda(){
 	document.getElementById("tipusLocal").value = getNameTipoLocalFromCodi(<%=local.getCodiTipoLocal()%>);
 	document.getElementById("observacions").value = checkIfNull(<%=local.getObservacions()%>);
 	getCaracteristiquesfromString("<%=caract%>");
+	setValuesInputDireccio();
 	defineLabelButtonbyAction();
 	letSearchByAdressDependingOnTipusBusqueda();
 </script>
