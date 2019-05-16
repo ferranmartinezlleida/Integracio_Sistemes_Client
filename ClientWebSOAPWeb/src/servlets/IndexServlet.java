@@ -2,6 +2,9 @@ package servlets;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.Hashtable;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -61,10 +64,12 @@ public class IndexServlet extends HttpServlet {
 
 			// Set attribute
 			Formulari formulari = port.getFormulariByLocalType(tipoLocal, idioma);
+			String[] nivells = (String[]) port.getNomNivell(idioma);
 			session.setAttribute("tipoLocal", tipoLocal);
 			session.setAttribute("idioma", idioma);
 			session.setAttribute("formulari", formulari);
-
+			session.setAttribute("nivells", nivells);			
+			
 			ServletContext context = getServletContext();
 			RequestDispatcher rd = context.getRequestDispatcher("/addLocal");
 			rd.forward(request, response);
@@ -78,3 +83,5 @@ public class IndexServlet extends HttpServlet {
 		}		
 	}
 }
+
+

@@ -17,6 +17,7 @@
 	// Get Attribute
 	int tipoLocal = (int) session.getAttribute("tipoLocal");
 	Formulari formulari = (Formulari) session.getAttribute("formulari");
+	String[] nivells = (String[]) session.getAttribute("nivells");
 	Caracteristica[] caracteristiques = formulari.getCaracteristiques();
 	
 	// Set Attribute
@@ -77,6 +78,7 @@
 	document.getElementById("nameTipoLocal").innerHTML = 
 		"Tipus de local: " + window.getNameTipoLocalFromCodi(<%=tipoLocal%>);
 
+	generateNivells();
 	generateFormulari();
 
 
@@ -89,17 +91,33 @@
 		return tipusLocal[codi - 1];
 	}
 
+	function generateNivells(){
+		<% for(int i = 0; i < nivells.length ; i++){ %>
+			
+			var div = document.createElement("div");
+			var att = document.createAttribute("id");
+			att.value =  "nivell_" + (<%=i%>+1);
+			div.setAttributeNode(att);
+
+			var node = document.createElement("h4");
+			var textnode = document.createTextNode("<%= nivells[i] %>");
+			node.appendChild(textnode);
+			div.appendChild(node);
+			
+			document.getElementById("formulariAccessibilitat").appendChild(div);
+	
+		<% } %>
+	}
+
 	function generateFormulari(){
 		
-		<% for(Caracteristica ca : caracteristiques) {
-			String text = ca.getNivell() + " - " + ca.getNomCaracteristica() ;
-		%>
+		<% for(Caracteristica ca : caracteristiques) { %>
 		
 			// Add NomCaracteristica
 			var node = document.createElement("p");
-			var textnode = document.createTextNode("<%= text %>");
+			var textnode = document.createTextNode("<%= ca.getNomCaracteristica() %>");
 			node.appendChild(textnode);
-			document.getElementById("formulariAccessibilitat").appendChild(node);
+			document.getElementById("nivell_" + <%=ca.getNivell()%>).appendChild(node);
 	
 			// Add select
 			var select = document.createElement("select");
@@ -112,7 +130,7 @@
 			// options for the select
 			var option;
 			
-			<% if (ca.getTipo().equals("1")) { %>
+			<% if (ca.getTipo() == 1) { %>
 
 				// option:  False
 				option = document.createElement("option");
@@ -128,7 +146,8 @@
 				option.appendChild(textnode);
 				select.appendChild(option);
 				
-			<% } else if (ca.getTipo().equals("2")){ %>
+			<% } else if (ca.getTipo() == 2){ %>
+			
 				// option: 1..5
 				for(var i = 1; i < 6; i ++){
 					option = document.createElement("option");
@@ -140,7 +159,7 @@
 		
 			<% } %>
 	
-			document.getElementById("formulariAccessibilitat").appendChild(select);
+			document.getElementById( "nivell_" + <%=ca.getNivell()%>).appendChild(select);
 	
 		<% } %>
 	}
