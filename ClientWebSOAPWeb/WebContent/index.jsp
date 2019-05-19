@@ -18,14 +18,8 @@ String nomLocal = local.getNomLocal();
 String tipus_busqueda = (String)session.getAttribute("tipus_busqueda");
 Formulari form = local.getForm();
 Caracteristica[] caracteristiques = form.getCaracteristiques();
+String[] nivells = (String[]) session.getAttribute("nivells");
 
-String caract = "";
-
-for(int i=0;i<caracteristiques.length;i++){
-	
-	caract = caract + caracteristiques[i].getNomCaracteristica() + "|" + caracteristiques[i].getValor() + "|" + caracteristiques[i].getTipo() + ";";
-	
-}
 
 String senseDades = "Sense Dades";
 boolean localTrobat = true;
@@ -38,6 +32,46 @@ if(local.getNomLocal().equals("buit")){
 
 %>
 <script>
+
+
+var formulariIdioma = {
+		ca:["Cert/fals","Cert","Fals","Rang: 1..5","Sense Dades"],
+		es:["Cierto/Falso","Cierto","Falso","Rango: 1..5","Sin Datos"],
+		en:["True/False","True","False","Range: 1..5","No Data"]
+
+		};
+
+var localData = {
+		ca:["Nom","Tipus Local","Adreça","Observacions","Dades de l'establiment","Formulari d'accessibilitat"],
+		es:["Nombre","Tipo Local","Dirección","Observaciones","Datos del establecimiento","Formulari de accessibilidad"],
+		en:["Name","Local Type","Adress","Observations","Establishment data","Accessibility Form"]
+
+		};
+
+
+function createTablesNivell(){
+	
+	<% for(int i = 0; i < nivells.length ; i++){ %>
+	
+	var table = document.createElement("table");
+	var att = document.createAttribute("id");
+	att.value =  "nivell_" + (<%=i%>+1);
+	table.setAttributeNode(att);
+
+	var row = table.insertRow(0);
+
+	var cell1 = row.insertCell(0)
+	var cell2 = row.insertCell(1)
+	var cell3 = row.insertCell(2)
+	
+
+	cell1.innerHTML = "<%= nivells[i] %>".bold();
+	
+	document.getElementById("accessibilitat").appendChild(table);
+
+<% } %>
+
+}
 
 function setValuesInputDireccio(){
 
@@ -69,45 +103,47 @@ function checkIfNull(obs){
 	return observacions;
 }
 
-function appendCaracteristicatoTable(tableName,row,nomCarac,valueCarac,tipoCarac){
-	var row = document.getElementById(tableName).insertRow(row);
+function appendCaracteristicatoTable(tableName,nomCarac,valueCarac,tipoCarac){
+	var row = document.getElementById(tableName).insertRow(document.getElementById(tableName).rows.length);
 	var cell1 = row.insertCell(0)
-	var cell2 = row.insertCell(1)
-	var cell3 = row.insertCell(2)
 	
 	var tipus = "";
 	var value = valueCarac;
-	debugger;
 	if(tipoCarac == "1"){
-		tipus = "Cert/fals";
+		tipus = formulariIdioma.<%=form.getIdioma()%>[0];
 		if(valueCarac == "0"){
-			value="Fals";
+			value=formulariIdioma.<%=form.getIdioma()%>[2];
 		}else if(valueCarac =="1" ){
-			value="Cert";
+			value=formulariIdioma.<%=form.getIdioma()%>[1];
 		}
 	}else if (tipoCarac == "2"){
-		tipus = "Rang: 1..5";
+		tipus = formulariIdioma.<%=form.getIdioma()%>[3];
 	}else if(tipoCarac ==""){
-		tipus = "Sense Dades";
+		tipus = formulariIdioma.<%=form.getIdioma()%>[4];
 		value = "";
 	}
+	nomCarac = nomCarac.toLowerCase();
+	nomCarac = nomCarac.charAt(0).toUpperCase() + nomCarac.slice(1);
 	
-	cell1.innerHTML= nomCarac;
-	cell2.innerHTML = tipus;
-	cell3.innerHTML = value;
+	cell1.innerHTML= " - " + nomCarac;
+
+	var row = document.getElementById(tableName).insertRow(document.getElementById(tableName).rows.length);
+	var cell0 = row.insertCell(0)
+	cell0.innerHTML = tipus + " -> " + value;
+
+	
 }
 
-function getCaracteristiquesfromString(caract){
 
-	var arrayCarac = caract.toString().split(";");
-	
-	for(i=0;i<(arrayCarac.length-1);i++){		
-		var caracteristica = arrayCarac[i].split("|");
-		appendCaracteristicatoTable("accessibilitat",(i+1),caracteristica[0],caracteristica[1],caracteristica[2]);
-			
-	}
+function putCaracteristiquesinPlace(){
 
+	<% for(Caracteristica ca : caracteristiques) { %>
+
+		appendCaracteristicatoTable("nivell_" + <%=ca.getNivell()%>,"<%=ca.getNomCaracteristica()%>","<%=ca.getValor()%>","<%=ca.getTipo()%>");
+
+	<% } %>
 }
+
 
 function defineLabelButtonbyAction(){
 
@@ -149,6 +185,18 @@ function letSearchByAdressDependingOnTipusBusqueda(){
 	
 }
 
+function changeLabelLanguage(){
+
+	document.getElementById("nom_est").innerHTML= localData.<%=form.getIdioma()%>[0];
+	document.getElementById("tiploc_est").innerHTML= localData.<%=form.getIdioma()%>[1];
+	document.getElementById("add_est").innerHTML= localData.<%=form.getIdioma()%>[2];
+	document.getElementById("obs_est").innerHTML= localData.<%=form.getIdioma()%>[3];
+	document.getElementById("dadesEst").innerHTML= localData.<%=form.getIdioma()%>[4];
+	document.getElementById("formEst").innerHTML= localData.<%=form.getIdioma()%>[5];
+	
+}
+
+
 
 
 </script>
@@ -177,32 +225,33 @@ function letSearchByAdressDependingOnTipusBusqueda(){
 	</table>
 	<table>
 	<tr>
-		<td>Dades de l'establiment</td>
+		<td><h1 id="dadesEst"></h1></td>
 		<td></td>
 	</tr>
 	<tr>
-		<td>Nom:</td>
+		<td id="nom_est"/>
 		<td><input type="text" name="nomLocal" readonly="readonly" id="nomLocal" value="<%=local.getNomLocal()%>"/></td>
 	</tr>
 	<tr>
-		<td>Tipus local</td>
+		<td id="tiploc_est"/>
 		<td><input type="text" name="tipusLocal" readonly="readonly" id="tipusLocal" value=""/></td>
 	</tr>
 	<tr>
-		<td>Adreça:</td>
+		<td id="add_est"/>
 		<td><input type="text" name="direccio" readonly="readonly" id="direccio"/></td>
 	</tr>
 	<tr>
-		<td>Observacions:</td>
+		<td id="obs_est"/>
 		<td><input type="text" name="observacions" readonly="readonly" id="observacions" value=""/></td>
 	</tr>
 </table>
-<table id="accessibilitat">
+<table>
 	<tr>
-		<td>Dades formulari</td>
+		<td><h1 id="formEst"><h1></td>
 		<td></td>
 	</tr>
-	
+</table>
+<table id="accessibilitat">
 </table>
 <form method="get" id="frm" name="frm" action="">
 
@@ -212,7 +261,7 @@ function letSearchByAdressDependingOnTipusBusqueda(){
 		<td><h1 id="boto_label"></h1></td>
 	</tr>
 	<tr>
-		<td><td><button id="boto" name="boto" onclick="document.frm.submit();" value=""> </button></td></td>
+		<td><button id="boto" name="boto" onclick="document.frm.submit();" value=""> </button></td>
 	</tr>
 </table>
 
@@ -225,7 +274,9 @@ function letSearchByAdressDependingOnTipusBusqueda(){
 <script>
 	document.getElementById("tipusLocal").value = getNameTipoLocalFromCodi(<%=local.getCodiTipoLocal()%>);
 	document.getElementById("observacions").value = checkIfNull(<%=local.getObservacions()%>);
-	getCaracteristiquesfromString("<%=caract%>");
+	createTablesNivell();
+	putCaracteristiquesinPlace();
+	changeLabelLanguage();
 	setValuesInputDireccio();
 	defineLabelButtonbyAction();
 	letSearchByAdressDependingOnTipusBusqueda();

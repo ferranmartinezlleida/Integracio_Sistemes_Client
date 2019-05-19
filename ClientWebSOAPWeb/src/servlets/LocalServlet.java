@@ -70,11 +70,13 @@ public class LocalServlet extends HttpServlet {
 			
 
 			Local local = port.getLocalByAdressOrName(tipusVia,nomCarrer,numero,nomLocal,idioma);
+			String[]nivells = port.getNomNivell(idioma);
 
 			sessio = request.getSession(true);		
 			sessio.setAttribute("Local", local);
 			sessio.setAttribute("action", action);
 			sessio.setAttribute("tipus_busqueda",tipus_busqueda);
+			sessio.setAttribute("nivells", nivells);
 			
 			ServletContext context= getServletContext();
 			RequestDispatcher rd= context.getRequestDispatcher("/index");
