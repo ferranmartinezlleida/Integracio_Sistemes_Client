@@ -19,77 +19,120 @@
 	Formulari formulari = (Formulari) session.getAttribute("formulari");
 	String[] nivells = (String[]) session.getAttribute("nivells");
 	Caracteristica[] caracteristiques = formulari.getCaracteristiques();
+	String idioma = (String) session.getAttribute("idioma");
 	
 	// Set Attribute
 	session.setAttribute("caracteristiques", caracteristiques);
-	session.setAttribute("idioma", session.getAttribute("idioma"));
+	session.setAttribute("idioma", idioma);
 	session.setAttribute("tipoLocal", tipoLocal);
 %>
 
 <body>
-	<h1>Donar d'alta un local</h1>
-	<p id="nameTipoLocal"></p>
-
+	<h1 id="header_est"></h1>
+	
+	<label id= "tiploc_est"></label> <label id="nameTipoLocal_est"></label>
+	<br><br>
+	
 	<form method="post" action="AddLocalServlet">
 			
-		Nom local: <input type="text" name="nomLocal" maxlength="250" />
+		<label id="nom_est"></label> <input type="text" name="nomLocal" maxlength="250" />
 		
 		<br><br>
 		 
-		Nom carrer: <input type="text" name="nomCarrer" maxlength="50" />
+		<label id="nomCarrer_est"></label> <input type="text" name="nomCarrer" maxlength="50" />
 			
 		<br><br>
 		
-		Codi carrer: <input type="number" name="codiCarrer" value=0 /> 
+		<label id="codiCarrer_est"></label> <input type="number" name="codiCarrer" value=0 /> 
 
 		<br><br>
 		
-		Nom via: <select name="nomVia">
-				  <option value="RA">Rambla</option>
-				  <option value="AV">Avinguda</option>
-				  <option value="PL">Plaça</option>
-  				  <option value="CA">Carrer</option>
-  				  <option value="PS">Passeig</option>
-  				  <option value="TR">Travesia</option>				  
-				</select>
+		<label id="nomVia_est"></label>  
+		<select name="nomVia">
+			<option id="RA_est"  value="RA"></option>
+			<option id="AV_est"  value="AV"></option>
+			<option id="PL_est"  value="PL"></option>
+			<option id="CA_est"  value="CA"></option>
+ 			<option id="PS_est"  value="PS"></option>
+ 			<option id="TR_est"  value="TR"></option>				  
+		</select>
 				
 		<br><br>
 		
-		Numero: <input type="number" name="numero" value=0 /> 
+		<label id="numero_est"></label>  <input type="number" name="numero" value=0 /> 
 		
 		<br><br>
 		
-		Observacions: <input type="text" name="observacions" maxlength="300" />
+		<label id="observacions_est"></label>  <input type="text" name="observacions" maxlength="300" />
 		
 		<br><br>
 
-		<h3>Formulari d'accessibilitat:</h3>
+		<h3 id= "formAccess_est"></h3>
 		
 		<div id="formulariAccessibilitat"></div>
 
 		<br>
 
-		<input type="submit" name="submit" value="Donar d'alta" />
+		<input id = "submit_est" type="submit" name="submit" value="Donar d'alta" />
 	</form>
 </body>
 
 <script>
 
-	document.getElementById("nameTipoLocal").innerHTML = 
-		"Tipus de local: " + window.getNameTipoLocalFromCodi(<%=tipoLocal%>);
+	var roadNames = {
+		ca: ["Rambla", "Avinguda", "Plaça", "Carrer", "Passeig", "Travesia"],
+		es: ["Rambla", "Avenida", "Plaza", "Calle", "Paseo", "Travesía"],
+		en: ["Rambla", "Avenue", "Square", "Street", "Promenade", "Crossing"]
+	};
+
+	var UIdata ={
+			ca: ["Donar d'alta un local", "Donar d'alta", "Cert" , "Fals"],
+			es: ["Dar de alta un local", "Dar de alta", "Cierto", "Falso"],
+			en: ["Register a local", "Register", "True", "False"]
+	};
+
+		
+	var localData = {
+			ca: ["Tipus local", "Nom local"," Nom carrer"," Codi carrer"," Nom via"," Numero"," Observacions", "Formulari d'accessibilitat"],
+			es: ["Tipo local", "Nombre local" ," Nombre calle", "Codigo calle", "Nombre vía", "Número", "Observaciones", "Formulario de accesibilidad"],
+			en: ["Local type", "Local name" , "Street name", "Street code"," Road name"," Number"," Observations", "Accessibility form"]
+	};
+
+	var localType = {
+			ca: ["BARS I RESTAURANTS", "COMERÇOS", "ENTITATS BANCÀRIES" , "FARMÀCIES",  "HOTELS" ,  "LOCALS PÚBLICS"],
+			es: ["BARES Y RESTAURANTES", "COMERCIOS", "ENTIDADES BANCARIAS", "FARMACIAS",  "HOTELES", "LOCALES PÚBLICOS" ],
+			en: ["BARS AND RESTAURANTS", "COMMERCE",  "BANK"               , "PHARMACY" ,   "HOTELS" ,  "PUBLIC ESTABLISHMENTS"]
+	};
+	
+
+	function changeLabelLanguage(){
+		document.getElementById("header_est").innerHTML = 	UIdata.<%=idioma%>[0];
+		document.getElementById("submit_est").value     = 	UIdata.<%=idioma%>[1];
+
+		document.getElementById("RA_est").innerHTML = 		roadNames.<%=idioma%>[0];
+		document.getElementById("AV_est").innerHTML = 		roadNames.<%=idioma%>[1];
+		document.getElementById("PL_est").innerHTML = 		roadNames.<%=idioma%>[2];
+		document.getElementById("CA_est").innerHTML = 		roadNames.<%=idioma%>[3];
+		document.getElementById("PS_est").innerHTML = 		roadNames.<%=idioma%>[4];
+		document.getElementById("TR_est").innerHTML = 		roadNames.<%=idioma%>[5];
+		
+		document.getElementById("tiploc_est").innerHTML       =  	localData.<%=idioma%>[0] + ':';
+		document.getElementById("nom_est").innerHTML 	      = 	localData.<%=idioma%>[1] + ':';
+		document.getElementById("nomCarrer_est").innerHTML    =    	localData.<%=idioma%>[2] + ':';
+		document.getElementById("codiCarrer_est").innerHTML   = 	localData.<%=idioma%>[3] + ':';
+		document.getElementById("nomVia_est").innerHTML		  = 	localData.<%=idioma%>[4] + ':';
+		document.getElementById("numero_est").innerHTML       = 	localData.<%=idioma%>[5] + ':';
+		document.getElementById("observacions_est").innerHTML =		localData.<%=idioma%>[6] + ':';
+		document.getElementById("formAccess_est").innerHTML   = 	localData.<%=idioma%>[7] + ':';
+
+		document.getElementById("nameTipoLocal_est").innerHTML = localType.<%=idioma%>[<%=tipoLocal-1%>];
+	}
+
+	changeLabelLanguage()
 
 	generateNivells();
 	generateFormulari();
 
-
-	function getNameTipoLocalFromCodi(codi) {
-
-		var tipusLocal = [ "BARS I RESTAURANTS", "COMERÇOS",
-						   "ENTITATS BANCÀRIES", "FARMÀCIES",
-						   "HOTELS", "LOCALS PÚBLICS" ];
-
-		return tipusLocal[codi - 1];
-	}
 
 	function generateNivells(){
 		<% for(int i = 0; i < nivells.length ; i++){ %>
@@ -135,14 +178,14 @@
 				// option:  False
 				option = document.createElement("option");
 				option.value = "0";
-				textnode = document.createTextNode("Fals");
+				textnode = document.createTextNode(UIdata.<%=idioma%>[3]);
 				option.appendChild(textnode);
 				select.appendChild(option);
 				
 				// option: True
 				option = document.createElement("option");
 				option.value = "1";
-				textnode = document.createTextNode("Cert");
+				textnode = document.createTextNode(UIdata.<%=idioma%>[2]);
 				option.appendChild(textnode);
 				select.appendChild(option);
 				
