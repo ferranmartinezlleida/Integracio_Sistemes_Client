@@ -28,7 +28,6 @@ public class Verify extends HttpServlet {
 	 */
 	public Verify() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -37,7 +36,6 @@ public class Verify extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// response.getWriter().append("Served at: ").append(request.getContextPath());
 		doFer(request, response);
 	}
 
@@ -54,7 +52,6 @@ public class Verify extends HttpServlet {
 	private void doFer(HttpServletRequest request, HttpServletResponse response) {
 
 		HttpSession sessio;
-		Connection connection = null;
 
 		try {
 
@@ -88,7 +85,5 @@ public class Verify extends HttpServlet {
 		} catch (ServiceException e) {
 			e.printStackTrace();
 		}
-
 	}
-
 }

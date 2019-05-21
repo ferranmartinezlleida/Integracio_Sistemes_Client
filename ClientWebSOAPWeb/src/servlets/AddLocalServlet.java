@@ -28,14 +28,12 @@ public class AddLocalServlet extends HttpServlet {
      */
     public AddLocalServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doFer(request, response);
 	}
 
@@ -43,7 +41,6 @@ public class AddLocalServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doFer(request, response);
 	}
 	
@@ -51,7 +48,6 @@ public class AddLocalServlet extends HttpServlet {
 	private void doFer(HttpServletRequest request, HttpServletResponse response) {
 		
 		HttpSession session;
-		Connection connection = null;
 		
 		try {
 			ServeiWebServiceLocator service = new ServeiWebServiceLocator();

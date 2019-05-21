@@ -50,7 +50,6 @@ public class IndexServlet extends HttpServlet {
 	private void doFer(HttpServletRequest request, HttpServletResponse response) {
 		
 		HttpSession session;
-		Connection connection = null;
 		
 		try {
 			ServeiWebServiceLocator service = new ServeiWebServiceLocator();

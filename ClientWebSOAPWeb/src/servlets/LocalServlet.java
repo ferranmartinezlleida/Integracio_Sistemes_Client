@@ -31,14 +31,12 @@ public class LocalServlet extends HttpServlet {
      */
     public LocalServlet() {
         super();
-
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//response.getWriter().append("Served at: ").append(request.getContextPath());
 		doFer(request, response);
 	}
 
@@ -53,7 +51,6 @@ public class LocalServlet extends HttpServlet {
 	private void doFer(HttpServletRequest request, HttpServletResponse response) {
 		
 		HttpSession sessio;
-		Connection connection = null;
 		
 		try {
 			ServeiWebServiceLocator service = new ServeiWebServiceLocator();
@@ -70,7 +67,7 @@ public class LocalServlet extends HttpServlet {
 			
 
 			Local local = port.getLocalByAdressOrName(tipusVia,nomCarrer,numero,nomLocal,idioma);
-			String[]nivells = port.getNomNivell(idioma);
+			String[] nivells = port.getNomNivell(idioma);
 
 			sessio = request.getSession(true);		
 			sessio.setAttribute("Local", local);
@@ -89,10 +86,6 @@ public class LocalServlet extends HttpServlet {
 		}catch (ServiceException e2) {
 			e2.printStackTrace();
 		}
-		
-		
-		
+			
 	}
-	
-
 }
