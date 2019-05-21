@@ -74,6 +74,7 @@ public class LocalServlet extends HttpServlet {
 			sessio.setAttribute("action", action);
 			sessio.setAttribute("tipus_busqueda",tipus_busqueda);
 			sessio.setAttribute("nivells", nivells);
+			sessio.setAttribute("idioma",idioma);
 			
 			ServletContext context= getServletContext();
 			RequestDispatcher rd= context.getRequestDispatcher("/index");

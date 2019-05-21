@@ -28,6 +28,11 @@
 %>
 
 <body>
+	<table>
+		<tr>
+			<td><a href="index.html">Torna al inici</a></td>
+		</tr>	
+	</table>
 	<h1 id="header_est"></h1>
 	
 	<label id= "tiploc_est"></label> <label id="nameTipoLocal_est"></label>

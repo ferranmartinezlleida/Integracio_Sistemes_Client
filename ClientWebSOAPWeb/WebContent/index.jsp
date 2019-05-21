@@ -25,9 +25,11 @@ String senseDades = "Sense Dades";
 boolean localTrobat = true;
 
 if(local.getNomLocal().equals("buit")){
+	String idioma = (String) session.getAttribute("idioma");
 	localTrobat = false;
 	local.setNomLocal(senseDades);
 	local.setCodiTipoLocal(7);
+	form.setIdioma(idioma);
 }
 
 %>
@@ -43,7 +45,7 @@ var formulariIdioma = {
 
 var localData = {
 		ca:["Nom","Tipus Local","Adreça","Observacions","Dades de l'establiment","Formulari d'accessibilitat"],
-		es:["Nombre","Tipo Local","Dirección","Observaciones","Datos del establecimiento","Formulari de accessibilidad"],
+		es:["Nombre","Tipo Local","Dirección","Observaciones","Datos del establecimiento","Formulario de accessibilidad"],
 		en:["Name","Local Type","Adress","Observations","Establishment data","Accessibility Form"]
 
 		};
@@ -77,8 +79,13 @@ function setValuesInputDireccio(){
 
 	if(<%=localTrobat%>){
 		document.getElementById("direccio").value = "<%=local.getNomVia()%> <%=local.getNomCarrer()%>, <%=local.getNumero()%>";
+		document.getElementById("observacions").value = formulariIdioma.<%=form.getIdioma()%>[4];
 	}else{
-		document.getElementById("direccio").value = "Sense Dades";
+		document.getElementById("nomLocal").value = formulariIdioma.<%=form.getIdioma()%>[4];
+		document.getElementById("tipusLocal").value = formulariIdioma.<%=form.getIdioma()%>[4];
+		document.getElementById("direccio").value = formulariIdioma.<%=form.getIdioma()%>[4];
+		document.getElementById("observacions").value = formulariIdioma.<%=form.getIdioma()%>[4];
+		
 	}
 	
 }
@@ -137,38 +144,44 @@ function appendCaracteristicatoTable(tableName,nomCarac,valueCarac,tipoCarac){
 
 function putCaracteristiquesinPlace(){
 
+	if(<%=localTrobat%>){
 	<% for(Caracteristica ca : caracteristiques) { %>
 
 		appendCaracteristicatoTable("nivell_" + <%=ca.getNivell()%>,"<%=ca.getNomCaracteristica()%>","<%=ca.getValor()%>","<%=ca.getTipo()%>");
 
 	<% } %>
+	}
 }
 
 
 function defineLabelButtonbyAction(){
-
-	var button = "";
-	var action = "";
-	var action = "<%=action%>";
-	if(action == "B"){
-
-		button="Dona de Baixa";
-		action="Esborra";
-		document.frm.action ="Delete";
-	}else if(action == "V"){
-		button="Validar";
-		action="Valida";
-		document.frm.action ="verify_servlet";
-	}else if(action == "C"){
-		document.getElementById('taula_accions').style.display = 'none';
-		document.getElementById('boto').style.display = 'none';
-		document.getElementById('boto_label').style.display = 'none';
-		
+	if(<%=localTrobat%>){
+		var button = "";
+		var action = "";
+		var action = "<%=action%>";
+		if(action == "B"){
+	
+			button="Dona de Baixa";
+			action="Esborra";
+			document.frm.action ="Delete";
+		}else if(action == "V"){
+			button="Validar";
+			action="Valida";
+			document.frm.action ="verify_servlet";
+		}else if(action == "C"){
+			document.getElementById('taula_accions').style.display = 'none';
+			document.getElementById('boto').style.display = 'none';
+			document.getElementById('boto_label').style.display = 'none';
+			
+	
+		}
+		document.getElementById('adress').href = "adress.html?action="+"<%=action%>";
+		document.getElementById('boto').innerHTML=button;
+		document.getElementById('boto_label').innerHTML=action;
+	}else{
+		document.getElementById('boto').style.display="none"
 
 	}
-	document.getElementById('adress').href = "adress.html?action="+"<%=action%>";
-	document.getElementById('boto').innerHTML=button;
-	document.getElementById('boto_label').innerHTML=action;
 	
 }
 
@@ -230,19 +243,19 @@ function changeLabelLanguage(){
 	</tr>
 	<tr>
 		<td id="nom_est"/>
-		<td><input type="text" name="nomLocal" readonly="readonly" id="nomLocal" value="<%=local.getNomLocal()%>"/></td>
+		<td><input type="text" name="nomLocal" readonly="readonly" id="nomLocal" value="<%=local.getNomLocal()%>" style="width:200px"/></td>
 	</tr>
 	<tr>
 		<td id="tiploc_est"/>
-		<td><input type="text" name="tipusLocal" readonly="readonly" id="tipusLocal" value=""/></td>
+		<td><input type="text" name="tipusLocal" readonly="readonly" id="tipusLocal" value="" style="width:200px"/></td>
 	</tr>
 	<tr>
 		<td id="add_est"/>
-		<td><input type="text" name="direccio" readonly="readonly" id="direccio"/></td>
+		<td><input type="text" name="direccio" readonly="readonly" id="direccio" style="width:200px"/></td>
 	</tr>
 	<tr>
 		<td id="obs_est"/>
-		<td><input type="text" name="observacions" readonly="readonly" id="observacions" value=""/></td>
+		<td><input type="text" name="observacions" readonly="readonly" id="observacions" value="" style="width:200px"/></td>
 	</tr>
 </table>
 <table>
