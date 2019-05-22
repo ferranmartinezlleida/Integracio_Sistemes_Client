@@ -232,7 +232,7 @@ function changeLabelLanguage(){
 			<td></td>
 		</tr>
 		<tr>
-			<td>Proba una cerca més concreta</td>
+			<td>Prova una cerca més concreta</td>
 			<td><a id="adress" name="adress"  href="">Busca per adreça</a></td>
 		</tr>
 	</table>
