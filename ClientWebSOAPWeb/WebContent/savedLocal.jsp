@@ -13,6 +13,8 @@
 <title></title>
 </head>
 <body>
+	<a href="index.html">Torna al inici</a>
+
 	<h1 id="status"></h1>
 </body>
 

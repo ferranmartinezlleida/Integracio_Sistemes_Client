@@ -68,8 +68,8 @@ public class AddLocalServlet extends HttpServlet {
 			// Set Local fields
 			Local local = new Local();
 			local.setCodiTipoLocal(tipoLocal);
-			local.setNomLocal(nomLocal);
-			local.setNomCarrer(nomCarrer);
+			local.setNomLocal(nomLocal.toUpperCase());
+			local.setNomCarrer(nomCarrer.toUpperCase());
 			local.setCodiCarrer(codiCarrer);
 			local.setNomVia(nomVia);
 			local.setNumero(numero);
