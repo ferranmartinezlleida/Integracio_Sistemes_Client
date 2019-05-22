@@ -79,7 +79,9 @@ function setValuesInputDireccio(){
 
 	if(<%=localTrobat%>){
 		document.getElementById("direccio").value = "<%=local.getNomVia()%> <%=local.getNomCarrer()%>, <%=local.getNumero()%>";
-		document.getElementById("observacions").value = formulariIdioma.<%=form.getIdioma()%>[4];
+		if("<%=local.getObservacions()%>" != "null"){
+			document.getElementById("observacions").value = "<%=local.getObservacions()%>";
+		}
 	}else{
 		document.getElementById("nomLocal").value = formulariIdioma.<%=form.getIdioma()%>[4];
 		document.getElementById("tipusLocal").value = formulariIdioma.<%=form.getIdioma()%>[4];
@@ -100,10 +102,10 @@ function getNameTipoLocalFromCodi(codi){
 }
 
 function checkIfNull(obs){
-
+	debugger;
 	var observacions = "Sense Dades";
 
-	if(obs != null){
+	if(obs != "null"){
 		observacions = obs;
 	}
 
@@ -285,12 +287,13 @@ function changeLabelLanguage(){
 
 </body>
 <script>
+	debugger;
 	document.getElementById("tipusLocal").value = getNameTipoLocalFromCodi(<%=local.getCodiTipoLocal()%>);
-	document.getElementById("observacions").value = checkIfNull(<%=local.getObservacions()%>);
+	setValuesInputDireccio();
+//	document.getElementById("observacions").value = checkIfNull("<%=local.getObservacions()%>");
 	createTablesNivell();
 	putCaracteristiquesinPlace();
 	changeLabelLanguage();
-	setValuesInputDireccio();
 	defineLabelButtonbyAction();
 	letSearchByAdressDependingOnTipusBusqueda();
 </script>

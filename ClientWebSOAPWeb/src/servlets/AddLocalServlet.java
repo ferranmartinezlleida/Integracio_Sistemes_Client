@@ -73,7 +73,7 @@ public class AddLocalServlet extends HttpServlet {
 			local.setCodiCarrer(codiCarrer);
 			local.setNomVia(nomVia);
 			local.setNumero(numero);
-			local.setObservacions(observacions);
+			local.setObservacions(observacions.toUpperCase());
 			
 			Formulari form = new Formulari();
 			form.setCodiTipoLocal(tipoLocal);
